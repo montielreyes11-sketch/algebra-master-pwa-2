@@ -1,11 +1,14 @@
 {
-  "name": "Álgebra Master",
-  "short_name": "Álgebra",
-  "description": "Plan de estudio de álgebra de 12 semanas",
+  "name": "Álgebra Master — aprende a tu ritmo",
+  "short_name": "Álgebra Master",
+  "description": "Plan de estudio de álgebra de 12 semanas con lecciones, exámenes y seguimiento offline.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#10131a",
+  "orientation": "portrait-primary",
+  "background_color": "#f5f7fb",
   "theme_color": "#2563eb",
-  "icons": []
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
 }

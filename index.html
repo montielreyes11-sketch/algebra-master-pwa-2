@@ -4,39 +4,82 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#2563eb">
-  <title>Álgebra Master</title>
+  <meta name="description" content="Aprende álgebra paso a paso con un plan de 12 semanas, lecciones, exámenes y seguimiento de progreso. Funciona sin conexión.">
+  <title>Álgebra Master — aprende a tu ritmo</title>
   <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="topbar">
-    <div>
-      <p class="eyebrow">Mi plan</p>
-      <h1>Álgebra Master</h1>
+    <a class="brand" href="#inicio" aria-label="Álgebra Master, inicio">
+      <span class="brand-mark" aria-hidden="true">∑</span>
+      <span>Álgebra <strong>Master</strong></span>
+    </a>
+    <div class="top-actions">
+      <button id="installButton" class="button button-secondary install-button" type="button" hidden>＋ Instalar app</button>
+      <button id="themeToggle" class="icon-button" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">🌙</button>
     </div>
-    <button id="themeToggle" class="icon-button" type="button" aria-label="Cambiar tema">🌙</button>
   </header>
 
-  <main>
-    <section class="hero card">
-      <div class="progress-head">
-        <div>
-          <p class="eyebrow">Progreso general</p>
-          <strong id="progressText">0% completado</strong>
+  <nav class="main-nav" aria-label="Navegación principal">
+    <button class="nav-link active" type="button" data-view="inicio">🏠 <span>Inicio</span></button>
+    <button class="nav-link" type="button" data-view="plan">📅 <span>Mi plan</span></button>
+    <button class="nav-link" type="button" data-view="examen">✏️ <span>Exámenes</span></button>
+    <button class="nav-link" type="button" data-view="logros">🏆 <span>Logros</span></button>
+  </nav>
+
+  <main class="page-shell">
+    <section id="view-inicio" class="view active" aria-labelledby="welcomeTitle">
+      <div class="welcome hero-card">
+        <div class="welcome-copy">
+          <p class="eyebrow">TU RUTA DE APRENDIZAJE</p>
+          <h1 id="welcomeTitle">Domina el álgebra,<br><span>paso a paso.</span></h1>
+          <p class="welcome-text">Un plan claro de 12 semanas para aprender, practicar y ver cuánto has avanzado.</p>
+          <button class="button button-primary" type="button" data-go="plan">Continuar mi plan <span aria-hidden="true">→</span></button>
         </div>
-        <span id="progressCount">0/12</span>
+        <div class="hero-art" aria-hidden="true"><span class="math-symbol symbol-one">x²</span><span class="math-symbol symbol-two">÷</span><span class="math-symbol symbol-three">＋</span><span class="math-symbol symbol-four">=</span><div class="hero-orbit">∑</div></div>
       </div>
-      <div class="progress-track" aria-label="Progreso general">
-        <div id="progressBar" class="progress-bar"></div>
+
+      <section class="progress-card card" aria-labelledby="progressHeading">
+        <div class="progress-top"><div><p class="eyebrow">TU PROGRESO</p><h2 id="progressHeading">Cada paso cuenta</h2></div><div class="progress-number"><strong id="progressPercent">0%</strong><span id="progressCount">0 de 12 semanas</span></div></div>
+        <div class="progress-track" role="progressbar" aria-label="Progreso del plan" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="progressBar" class="progress-bar"></div></div>
+        <p id="progressEncouragement" class="progress-note">¡Tu aventura empieza aquí!</p>
+      </section>
+
+      <div class="section-heading"><div><p class="eyebrow">EMPIEZA A PRACTICAR</p><h2>Tu espacio de estudio</h2></div></div>
+      <div class="feature-grid">
+        <button class="feature-card" type="button" data-go="plan"><span class="feature-icon blue">📚</span><span><strong>Lecciones</strong><small>Explicaciones y ejemplos</small></span><span class="feature-arrow">→</span></button>
+        <button class="feature-card" type="button" data-go="examen"><span class="feature-icon purple">✏️</span><span><strong>Examen rápido</strong><small>Practica con preguntas nuevas</small></span><span class="feature-arrow">→</span></button>
+        <button class="feature-card" type="button" data-go="logros"><span class="feature-icon gold">🏆</span><span><strong>Mis logros</strong><small>Celebra lo que has conseguido</small></span><span class="feature-arrow">→</span></button>
       </div>
+
+      <div class="section-heading week-heading"><div><p class="eyebrow">SIGUIENTE EN TU RUTA</p><h2>Plan de 12 semanas</h2></div><button class="text-button" type="button" data-go="plan">Ver todo <span aria-hidden="true">→</span></button></div>
+      <div id="homeWeekList" class="week-list compact-list"></div>
     </section>
 
-    <section>
-      <h2>Plan de 12 semanas</h2>
+    <section id="view-plan" class="view" aria-labelledby="planTitle" hidden>
+      <div class="page-intro"><p class="eyebrow">UN PLAN A TU MEDIDA</p><h1 id="planTitle">Tu plan de estudio</h1><p>Avanza semana a semana. Abre una lección, practica y marca cada tema cuando lo domines.</p></div>
+      <div class="plan-summary card"><span class="summary-icon">🧭</span><div><strong>12 semanas para ganar confianza</strong><p>Tu progreso se guarda automáticamente en este dispositivo.</p></div></div>
       <div id="weekList" class="week-list"></div>
+    </section>
+
+    <section id="view-examen" class="view" aria-labelledby="examTitle" hidden>
+      <div class="page-intro"><p class="eyebrow">PRACTICA LO APRENDIDO</p><h1 id="examTitle">Examen rápido</h1><p>Responde cinco preguntas variadas y recibe tu resultado al instante.</p></div>
+      <div id="examContainer" class="exam-card card"></div>
+    </section>
+
+    <section id="view-logros" class="view" aria-labelledby="achievementsTitle" hidden>
+      <div class="page-intro"><p class="eyebrow">RECONOCE TU ESFUERZO</p><h1 id="achievementsTitle">Tus logros</h1><p>Los pequeños avances también merecen celebrarse.</p></div>
+      <div class="achievement-progress card"><span class="trophy-large">🏆</span><div><strong id="badgeCount">0 de 5 logros</strong><p>Completa lecciones y exámenes para desbloquear insignias.</p></div></div>
+      <div id="badgeList" class="badge-grid"></div>
     </section>
   </main>
 
-  <script src="app.js"></script>
+  <footer class="footer"><span class="brand-mark small" aria-hidden="true">∑</span><span>Álgebra Master</span><span class="footer-dot">·</span><span>Tu aprendizaje, a tu ritmo.</span><span class="offline-label"><span class="online-dot"></span> Disponible sin conexión</span></footer>
+
+  <dialog id="lessonDialog" class="lesson-dialog" aria-labelledby="lessonTitle"><div class="dialog-header"><div><p id="lessonWeekLabel" class="eyebrow"></p><h2 id="lessonTitle"></h2></div><button class="icon-button dialog-close" type="button" aria-label="Cerrar lección">×</button></div><div id="lessonContent" class="lesson-content"></div><div class="dialog-footer"><button id="lessonComplete" class="button button-primary" type="button">Marcar como completada ✓</button></div></dialog>
+
+  <script src="app.js" defer></script>
 </body>
 </html>
