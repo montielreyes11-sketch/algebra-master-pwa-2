@@ -6,11 +6,12 @@ Aplicación web progresiva (PWA) en español para estudiar álgebra durante 12 s
 
 - Plan de 12 semanas con explicaciones, ejemplos y ejercicios con respuesta.
 - Seguimiento de lecciones completadas y barra de progreso guardada en el dispositivo.
-- Exámenes de cinco preguntas elegidas al azar, con corrección inmediata y mejor puntuación.
-- Insignias por progreso y exámenes completados.
+- Exámenes de cinco preguntas en niveles Básico, Intermedio y Avanzado, con corrección y soluciones.
+- Banco de ejercicios con soluciones paso a paso, teoría por tema y estadísticas personales.
+- Tutor local guiado con los 12 temas, explicación, ejemplo, práctica y respuesta.
 - Tema claro/oscuro con preferencia guardada.
 - Instalación como aplicación y funcionamiento sin conexión mediante service worker.
-- Diseño adaptable a móvil y escritorio.
+- Horario semanal editable y recordatorios locales opcionales.
 
 ## Ejecutar localmente
 

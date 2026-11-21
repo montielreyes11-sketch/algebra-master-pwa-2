@@ -25,7 +25,11 @@
   <nav class="main-nav" aria-label="Navegación principal">
     <button class="nav-link active" type="button" data-view="inicio">🏠 <span>Inicio</span></button>
     <button class="nav-link" type="button" data-view="plan">📅 <span>Mi plan</span></button>
+    <button class="nav-link" type="button" data-view="teoria">📖 <span>Teoría</span></button>
+    <button class="nav-link" type="button" data-view="tutor">🧑‍🏫 <span>Tutor</span></button>
+    <button class="nav-link" type="button" data-view="ejercicios">🧩 <span>Ejercicios</span></button>
     <button class="nav-link" type="button" data-view="examen">✏️ <span>Exámenes</span></button>
+    <button class="nav-link" type="button" data-view="horario">🕒 <span>Horario</span></button>
     <button class="nav-link" type="button" data-view="logros">🏆 <span>Logros</span></button>
   </nav>
 
@@ -64,13 +68,53 @@
       <div id="weekList" class="week-list"></div>
     </section>
 
+    <section id="view-teoria" class="view" aria-labelledby="theoryTitle" hidden>
+      <div class="page-intro"><p class="eyebrow">CONCEPTOS CLAROS</p><h1 id="theoryTitle">Teoría y explicaciones</h1><p>Consulta resúmenes, ideas clave y ejemplos ilustrados.</p></div>
+      <div id="theoryGrid" class="theory-grid"></div>
+    </section>
+
+    <section id="view-tutor" class="view" aria-labelledby="tutorTitle" hidden>
+      <div class="page-intro"><p class="eyebrow">TU GUÍA PASO A PASO</p><h1 id="tutorTitle">Tutor guiado</h1><p>Elige un tema y avanza por una explicación clara, un ejemplo, una práctica y su respuesta.</p></div>
+      <div class="tutor-layout">
+        <aside class="card tutor-selector">
+          <label class="field-label" for="tutorTopic">Tema de estudio</label>
+          <select id="tutorTopic" class="tutor-select" aria-label="Tema de tutoría"></select>
+          <button id="restartTutor" class="button button-secondary" type="button">↺ Reiniciar guía</button>
+        </aside>
+        <article class="card tutor-panel">
+          <div class="tutor-progress-head">
+            <div><p id="tutorStepLabel" class="eyebrow">PASO 1 DE 5</p><h2 id="tutorHeading"></h2></div>
+            <span id="tutorTopicBadge" class="tutor-topic-badge"></span>
+          </div>
+          <div id="tutorProgress" class="tutor-progress" role="progressbar" aria-label="Avance del tutor" aria-valuemin="0" aria-valuemax="5" aria-valuenow="1"><span></span></div>
+          <div id="tutorContent" class="tutor-content" aria-live="polite"></div>
+          <div class="tutor-actions">
+            <button id="tutorBack" class="button button-secondary" type="button">← Anterior</button>
+            <button id="tutorNext" class="button button-primary" type="button">Siguiente →</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="view-ejercicios" class="view" aria-labelledby="exerciseTitle" hidden>
+      <div class="page-intro"><p class="eyebrow">PRACTICA SIN LÍMITES</p><h1 id="exerciseTitle">Banco de ejercicios</h1><p>Filtra por tema y descubre la solución paso a paso.</p></div>
+      <div class="filter-row" id="exerciseFilters" aria-label="Filtrar ejercicios"></div>
+      <div id="exerciseGrid" class="exercise-grid"></div>
+    </section>
+
     <section id="view-examen" class="view" aria-labelledby="examTitle" hidden>
       <div class="page-intro"><p class="eyebrow">PRACTICA LO APRENDIDO</p><h1 id="examTitle">Examen rápido</h1><p>Responde cinco preguntas variadas y recibe tu resultado al instante.</p></div>
       <div id="examContainer" class="exam-card card"></div>
     </section>
 
+    <section id="view-horario" class="view" aria-labelledby="scheduleTitle" hidden>
+      <div class="page-intro"><p class="eyebrow">CADA RUTINA ES DIFERENTE</p><h1 id="scheduleTitle">Mi horario</h1><p>Organiza tus sesiones según tu día a día.</p></div>
+      <div class="schedule-layout"><form id="scheduleForm" class="card schedule-card"></form><aside class="card reminder-card"><span class="reminder-icon">🔔</span><h2>Recordatorio diario</h2><p>Recibe una notificación local mientras la aplicación esté abierta.</p><label class="switch-row"><input id="reminderEnabled" type="checkbox"><span>Activar recordatorio</span></label><label class="field-label" for="reminderTime">Hora preferida</label><input id="reminderTime" class="time-input" type="time" value="19:00"><button id="enableNotifications" class="button button-secondary" type="button">Permitir notificaciones</button></aside></div>
+    </section>
+
     <section id="view-logros" class="view" aria-labelledby="achievementsTitle" hidden>
       <div class="page-intro"><p class="eyebrow">RECONOCE TU ESFUERZO</p><h1 id="achievementsTitle">Tus logros</h1><p>Los pequeños avances también merecen celebrarse.</p></div>
+      <div id="statsGrid" class="stats-grid"></div>
       <div class="achievement-progress card"><span class="trophy-large">🏆</span><div><strong id="badgeCount">0 de 5 logros</strong><p>Completa lecciones y exámenes para desbloquear insignias.</p></div></div>
       <div id="badgeList" class="badge-grid"></div>
     </section>
