@@ -26,6 +26,7 @@
     <button class="nav-link active" type="button" data-view="inicio">🏠 <span>Inicio</span></button>
     <button class="nav-link" type="button" data-view="plan">📅 <span>Mi plan</span></button>
     <button class="nav-link" type="button" data-view="teoria">📖 <span>Teoría</span></button>
+    <button class="nav-link" type="button" data-view="tutor">🧑‍🏫 <span>Tutor</span></button>
     <button class="nav-link" type="button" data-view="ejercicios">🧩 <span>Ejercicios</span></button>
     <button class="nav-link" type="button" data-view="examen">✏️ <span>Exámenes</span></button>
     <button class="nav-link" type="button" data-view="horario">🕒 <span>Horario</span></button>
@@ -70,6 +71,29 @@
     <section id="view-teoria" class="view" aria-labelledby="theoryTitle" hidden>
       <div class="page-intro"><p class="eyebrow">CONCEPTOS CLAROS</p><h1 id="theoryTitle">Teoría y explicaciones</h1><p>Consulta resúmenes, ideas clave y ejemplos ilustrados.</p></div>
       <div id="theoryGrid" class="theory-grid"></div>
+    </section>
+
+    <section id="view-tutor" class="view" aria-labelledby="tutorTitle" hidden>
+      <div class="page-intro"><p class="eyebrow">TU GUÍA PASO A PASO</p><h1 id="tutorTitle">Tutor guiado</h1><p>Elige un tema y avanza por una explicación clara, un ejemplo, una práctica y su respuesta.</p></div>
+      <div class="tutor-layout">
+        <aside class="card tutor-selector">
+          <label class="field-label" for="tutorTopic">Tema de estudio</label>
+          <select id="tutorTopic" class="tutor-select" aria-label="Tema de tutoría"></select>
+          <button id="restartTutor" class="button button-secondary" type="button">↺ Reiniciar guía</button>
+        </aside>
+        <article class="card tutor-panel">
+          <div class="tutor-progress-head">
+            <div><p id="tutorStepLabel" class="eyebrow">PASO 1 DE 5</p><h2 id="tutorHeading"></h2></div>
+            <span id="tutorTopicBadge" class="tutor-topic-badge"></span>
+          </div>
+          <div id="tutorProgress" class="tutor-progress" role="progressbar" aria-label="Avance del tutor" aria-valuemin="0" aria-valuemax="5" aria-valuenow="1"><span></span></div>
+          <div id="tutorContent" class="tutor-content" aria-live="polite"></div>
+          <div class="tutor-actions">
+            <button id="tutorBack" class="button button-secondary" type="button">← Anterior</button>
+            <button id="tutorNext" class="button button-primary" type="button">Siguiente →</button>
+          </div>
+        </article>
+      </div>
     </section>
 
     <section id="view-ejercicios" class="view" aria-labelledby="exerciseTitle" hidden>

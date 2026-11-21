@@ -198,6 +198,42 @@ state.schedule=state.schedule||Object.fromEntries(days.map(day=>[day,{time:'19:0
 state.reminder=state.reminder||{enabled:false,time:'19:00',lastShown:''};
 state.practiceCount=Number(state.practiceCount)||0;
 state.bestByLevel=state.bestByLevel||{basico:0,intermedio:0,avanzado:0};
+state.tutor=state.tutor||{topic:0,step:0};
+state.tutor.topic=Number.isInteger(state.tutor.topic)&&state.tutor.topic>=0&&state.tutor.topic<lessons.length?state.tutor.topic:0;
+state.tutor.step=Number.isInteger(state.tutor.step)&&state.tutor.step>=0&&state.tutor.step<5?state.tutor.step:0;
+
+const tutorSteps=[
+  {key:'idea',icon:'💡',title:'La idea clave'},
+  {key:'explanation',icon:'📖',title:'Comprende el concepto'},
+  {key:'example',icon:'🧮',title:'Observa un ejemplo'},
+  {key:'practice',icon:'🎯',title:'Practica tú'},
+  {key:'answer',icon:'✅',title:'Comprueba tu respuesta'}
+];
+
+function renderTutor(){
+  const topic=document.querySelector('#tutorTopic');
+  if(!topic)return;
+  topic.innerHTML=lessons.map((lesson,index)=>`<option value="${index}" ${index===state.tutor.topic?'selected':''}>${index+1}. ${lesson.title}</option>`).join('');
+  const lesson=lessons[state.tutor.topic];
+  const step=tutorSteps[state.tutor.step];
+  const content={
+    idea:`<p>${lesson.explanation}</p><div class="tutor-keypoint"><strong>Objetivo</strong><span>Reconoce cuándo puedes aplicar esta idea y qué operación corresponde.</span></div>`,
+    explanation:`<p>${lesson.explanation}</p><ol class="tutor-steps"><li>Identifica los datos y la incógnita.</li><li>Aplica la propiedad o operación del tema.</li><li>Comprueba que el resultado tenga sentido.</li></ol>`,
+    example:`<div class="tutor-example">${lesson.example}</div><p class="tutor-help">Lee el ejemplo de izquierda a derecha y señala qué información cambió en cada paso.</p>`,
+    practice:`<div class="tutor-practice"><p>${lesson.practice}</p><label for="tutorAnswer">Escribe tu respuesta</label><input id="tutorAnswer" type="text" autocomplete="off" placeholder="Tu resultado"></div>`,
+    answer:`<div class="tutor-answer"><span>Respuesta esperada</span><strong>${lesson.answer}</strong></div><p class="tutor-help">Compara tu procedimiento, no solo el resultado final. Si difiere, vuelve al ejemplo y localiza el primer paso diferente.</p>`
+  }[step.key];
+  document.querySelector('#tutorStepLabel').textContent=`PASO ${state.tutor.step+1} DE ${tutorSteps.length}`;
+  document.querySelector('#tutorHeading').textContent=`${step.icon} ${step.title}`;
+  document.querySelector('#tutorTopicBadge').textContent=`Semana ${state.tutor.topic+1}`;
+  document.querySelector('#tutorContent').innerHTML=content;
+  const progress=document.querySelector('#tutorProgress');
+  progress.setAttribute('aria-valuenow',String(state.tutor.step+1));
+  progress.querySelector('span').style.width=`${((state.tutor.step+1)/tutorSteps.length)*100}%`;
+  document.querySelector('#tutorBack').disabled=state.tutor.step===0;
+  document.querySelector('#tutorNext').textContent=state.tutor.step===tutorSteps.length-1?'Terminar ✓':'Siguiente →';
+  saveState();
+}
 
 function renderTheory(){const grid=document.querySelector('#theoryGrid');if(!grid)return;grid.innerHTML=lessons.map((lesson,index)=>`<article class="theory-card"><span class="theory-topic">Semana ${index+1}</span><h3>${lesson.title}</h3><p>${lesson.explanation}</p><div class="theory-example"><strong>Ejemplo ilustrado</strong><span>${lesson.example}</span></div><button class="text-button theory-open" type="button" data-week="${index}">Abrir lección →</button></article>`).join('');}
 function renderExerciseFilters(){const topics=['Todos',...new Set(exerciseBank.map(item=>item.topic))];document.querySelector('#exerciseFilters').innerHTML=topics.map(topic=>`<button type="button" class="filter-chip ${topic===exerciseFilter?'active':''}" data-exercise-filter="${topic}">${topic}</button>`).join('');}
@@ -206,8 +242,8 @@ function renderStats(){const grid=document.querySelector('#statsGrid');if(!grid)
 function renderSchedule(){const form=document.querySelector('#scheduleForm');if(!form)return;form.innerHTML=`<div class="schedule-head"><div><p class="eyebrow">SEMANAL</p><h2>Ajusta tus sesiones</h2></div><button class="button button-primary" type="submit">Guardar horario</button></div><div class="schedule-days">${days.map((day,index)=>{const value=state.schedule[day]||{time:'19:00',activity:'Repasar una lección'};return `<label class="schedule-day"><span>${day}</span><input name="time-${index}" type="time" value="${value.time}" aria-label="Hora del ${day}"><input name="activity-${index}" type="text" value="${value.activity}" maxlength="60" aria-label="Actividad del ${day}"></label>`}).join('')}</div><p id="scheduleSaved" class="schedule-saved" role="status"></p>`;document.querySelector('#reminderEnabled').checked=state.reminder.enabled;document.querySelector('#reminderTime').value=state.reminder.time;}
 renderExamIntro=function(){examSubmitted=false;activeExam=[];document.querySelector('#examContainer').innerHTML=`<div class="exam-intro"><span class="exam-illustration">✏️</span><p class="eyebrow">5 PREGUNTAS · SOLUCIONES INCLUIDAS</p><h2>Elige tu nivel</h2><div class="level-grid"><button type="button" class="level-card ${examLevel==='basico'?'active':''}" data-level="basico"><strong>Básico</strong><span>Fundamentos esenciales</span></button><button type="button" class="level-card ${examLevel==='intermedio'?'active':''}" data-level="intermedio"><strong>Intermedio</strong><span>Factorización y ecuaciones</span></button><button type="button" class="level-card ${examLevel==='avanzado'?'active':''}" data-level="avanzado"><strong>Avanzado</strong><span>Cuadráticas y razonamiento</span></button></div><button id="startExam" class="button button-primary" type="button">Comenzar examen →</button><p class="exam-record">Exámenes completados: <strong>${state.exams||0}</strong> · Mejor: <strong>${state.bestScore||0}/5</strong></p></div>`};
 startExam=function(){activeExam=levelQuestions[examLevel].map(item=>({...item}));examSubmitted=false;document.querySelector('#examContainer').innerHTML=`<form id="examForm"><div class="exam-form-head"><p class="eyebrow">NIVEL ${examLevel.toUpperCase()}</p><span>5 preguntas</span></div>${activeExam.map((item,i)=>`<fieldset class="question-card"><legend><span class="question-number">${i+1}</span>${item.q}</legend>${item.options.map((option,j)=>`<label class="option-label"><input type="radio" name="q${i}" value="${j}" required><span>${option}</span></label>`).join('')}<p class="question-feedback" id="feedback${i}" aria-live="polite"></p></fieldset>`).join('')}<button class="button button-primary submit-exam" type="submit">Ver resultados →</button></form>`};
-showView=function(name){document.querySelectorAll('.view').forEach(view=>{const active=view.id===`view-${name}`;view.hidden=!active;view.classList.toggle('active',active)});document.querySelectorAll('.nav-link').forEach(button=>button.classList.toggle('active',button.dataset.view===name));if(name==='examen')renderExamIntro();if(name==='teoria')renderTheory();if(name==='ejercicios')renderExercises();if(name==='horario')renderSchedule();if(name==='logros'){renderStats();renderBadges()}window.scrollTo({top:0,behavior:'smooth'})};
-render=function(){renderWeeks();renderBadges();renderTheory();renderExercises();renderStats()};
+showView=function(name){document.querySelectorAll('.view').forEach(view=>{const active=view.id===`view-${name}`;view.hidden=!active;view.classList.toggle('active',active)});document.querySelectorAll('.nav-link').forEach(button=>button.classList.toggle('active',button.dataset.view===name));if(name==='examen')renderExamIntro();if(name==='teoria')renderTheory();if(name==='tutor')renderTutor();if(name==='ejercicios')renderExercises();if(name==='horario')renderSchedule();if(name==='logros'){renderStats();renderBadges()}window.scrollTo({top:0,behavior:'smooth'})};
+render=function(){renderWeeks();renderBadges();renderTheory();renderExercises();renderStats();renderTutor()};
 
 document.addEventListener('click',event=>{
 const level=event.target.closest('[data-level]');if(level){examLevel=level.dataset.level;renderExamIntro()}
@@ -222,4 +258,31 @@ const reminderEnabled=document.querySelector('#reminderEnabled');if(reminderEnab
 const reminderTime=document.querySelector('#reminderTime');if(reminderTime)reminderTime.addEventListener('change',event=>{state.reminder.time=event.target.value;saveState()});
 const enableNotifications=document.querySelector('#enableNotifications');if(enableNotifications)enableNotifications.addEventListener('click',async()=>{if(!('Notification'in window)){enableNotifications.textContent='Notificaciones no disponibles';return}const permission=await Notification.requestPermission();enableNotifications.textContent=permission==='granted'?'Notificaciones permitidas':'Permiso no concedido'});
 function checkReminder(){if(!state.reminder.enabled)return;const now=new Date(),hhmm=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`,today=now.toISOString().slice(0,10);if(hhmm===state.reminder.time&&state.reminder.lastShown!==today&&'Notification'in window&&Notification.permission==='granted'){new Notification('Álgebra Master',{body:'Es hora de dedicar unos minutos a tu plan de estudio.',icon:'icon.svg'});state.reminder.lastShown=today;saveState()}}
-setInterval(checkReminder,30000);renderTheory();renderExercises();renderStats();
+setInterval(checkReminder,30000);
+
+const tutorTopic=document.querySelector('#tutorTopic');
+if(tutorTopic)tutorTopic.addEventListener('change',event=>{
+  state.tutor.topic=Number(event.target.value);
+  state.tutor.step=0;
+  renderTutor();
+});
+const tutorBack=document.querySelector('#tutorBack');
+if(tutorBack)tutorBack.addEventListener('click',()=>{
+  if(state.tutor.step>0){state.tutor.step--;renderTutor();}
+});
+const tutorNext=document.querySelector('#tutorNext');
+if(tutorNext)tutorNext.addEventListener('click',()=>{
+  if(state.tutor.step<tutorSteps.length-1){state.tutor.step++;renderTutor();return;}
+  state.practiceCount++;
+  state.tutor.step=0;
+  saveState();
+  renderStats();
+  renderTutor();
+});
+const restartTutor=document.querySelector('#restartTutor');
+if(restartTutor)restartTutor.addEventListener('click',()=>{
+  state.tutor.step=0;
+  renderTutor();
+});
+
+renderTheory();renderExercises();renderStats();renderTutor();
