@@ -1,4 +1,4 @@
-const CACHE_NAME = "algebra-master-v2";
+const CACHE_NAME = "algebra-master-v3";
 const ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./manifest.json", "./icon.svg"];
 
 self.addEventListener("install", (event) => {
