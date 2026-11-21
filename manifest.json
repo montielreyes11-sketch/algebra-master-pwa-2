@@ -1,0 +1,11 @@
+{
+  "name": "Álgebra Master",
+  "short_name": "Álgebra",
+  "description": "Plan de estudio de álgebra de 12 semanas",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#10131a",
+  "theme_color": "#2563eb",
+  "icons": []
+}
